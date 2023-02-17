@@ -1,15 +1,28 @@
 ---
+import Layout from '../layouts/layout.astro';
+import { PokemonClient } from 'pokenode-ts';
+
+interface pokemon{
+	id: number,
+	name: string
+};
+
+//const client = new PokemonClient();
+
+// let pokemonList: string[] = [];
+// for(let i: number = 1; i <= 151; i++){
+// 	let temp = await client.getPokemonById(i);
+// 	pokemonList.push(temp.name);
+// }
+
+export async function getData(){
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=151');
+  console.log(res.json());
+  const data = JSON.stringify(res);
+  return data;
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	{getData()}
+</Layout>
