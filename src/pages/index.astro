@@ -1,11 +1,8 @@
 ---
 import Layout from '../layouts/layout.astro';
-import { PokemonClient } from 'pokenode-ts';
+//import { PokemonClient } from 'pokenode-ts';
 
-interface pokemon{
-	id: number,
-	name: string
-};
+
 
 //const client = new PokemonClient();
 
@@ -15,14 +12,29 @@ interface pokemon{
 // 	pokemonList.push(temp.name);
 // }
 
-export async function getData(){
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=151');
-  console.log(res.json());
-  const data = JSON.stringify(res);
-  return data;
-}
+
 ---
 
 <Layout>
-	{getData()}
+	<p id="result"></p>
+  <script>
+    interface pokemon{
+      id: number,
+      name: string
+    };
+
+    export async function getData() : Promise<pokemon[]> {
+      return fetch('https://pokeapi.co/api/v2/pokemon/?limit=151')
+        .then(res => res.json())
+        .then(res => {
+            return res as pokemon[]
+        })
+    }
+
+    const result = document.getElementById('result')
+    getData()
+            .then(pokemon => {
+                    result.innerHTML = pokemon.map(u => u.id).toString()
+            })
+  </script>
 </Layout>
